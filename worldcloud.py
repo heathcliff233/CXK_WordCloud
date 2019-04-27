@@ -6,10 +6,11 @@ import requests
 from scipy.misc import imread
 from wordcloud import WordCloud
 
-def fetch_bilibili():
+def fetch_bilibili(cid):
     PATTERN = re.compile('<d p=".*?">(.*?)<\/d>')
-    BASE_URL = 'http://comment.bilibili.com/83089367.xml'
-    with open('31621681.xml', 'w', encoding='utf-8') as f:
+    BASE_URL = 'http://comment.bilibili.com/'+ cid +'.xml'
+    name = cid + '.xml'
+    with open(name , 'w', encoding='utf-8') as f:
         r = requests.get(BASE_URL)
         data = r.text.encode('ISO-8859-1').decode('utf-8')
         p = re.findall(PATTERN, data)
@@ -19,7 +20,8 @@ def fetch_bilibili():
         
     
 def extract_words():
-    with open('31621681.xml','r', encoding='utf-8') as f:
+    name = str(cid) + '.xml'
+    with open(name,'r', encoding='utf-8') as f:
         news_subjects = f.readlines()
     
     stop_words = set(line.strip() for line in open('stopwords.txt', encoding='utf-8'))
@@ -49,5 +51,9 @@ def extract_words():
     plt.show()
     
 if __name__ == "__main__":
-    fetch_bilibili()
+    av = input("please input the av code : ")
+    basic = 'https://api.bilibili.com/x/player/pagelist?aid='
+    r = requests.get(basic + av)
+    cid = r.json()["data"][0]["cid"]
+    fetch_bilibili(str(cid))
     extract_words()
