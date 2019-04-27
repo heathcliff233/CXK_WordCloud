@@ -9,4 +9,8 @@ Craw comments of a video on bilibili to make a worldcloud picture in the shape o
 
 以及 
 
-鸡你太美！
+鸡你太美！  
+
+additional functions :  
+  
+input av codes to download comments and generate wordcloud.
